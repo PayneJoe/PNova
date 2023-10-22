@@ -1,6 +1,6 @@
 # PNova
 
-As we know [the original Nova implementation](https://github.com/microsoft/Nova)  is based R1CS. Our target is to implement a plonkish versioned NOVA, folding multiple Gate, Wiring, and Lookup instances into one respectively. Thereafter, we can feed the folded instances into Plonk SNARK.
+As we know [the original Nova implementation](https://github.com/microsoft/Nova)  is based on R1CS. Our target is to implement a plonkish versioned NOVA, folding multiple Gate, Wiring, and Lookup instances into one respectively. Thereafter, we can feed the folded instances into Plonk SNARK.
 
 <br />
 
