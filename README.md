@@ -6,19 +6,20 @@ As we know [the original Nova implementation](https://github.com/microsoft/Nova)
 
 ## Roadmap
 
-| Features                   | Status  |
-| -------------------------- | :-----: |
-| **Base Functionality**     |         |
-| Plonkish(gate+wiring) NIFS | Ongoing |
-| Cycle-Curve Circuits       | Ongoing |
-| Plonkish NOVA              | Ongoing |
-| **Advanced Functionality** |         |
-| Halo2-Lookup Argument      | Ongoing |
-| PLookup Argument           | Ongoing |
-| logUp Argument             | Ongoing |
-| **Optimization**           |         |
-| Cycle-fold                 | Ongoing |
-| Protostar                  | Ongoing |
+| Features                          | Status  |
+| --------------------------------- | :-----: |
+| **Base Functionality**            |         |
+| Plonkish(gate+wiring) NIFS        | Ongoing |
+| Cycle-Curve Circuits              | Ongoing |
+| Simplified Plonkish NOVA          | Ongoing |
+| **Advanced Functionality**        |         |
+| Halo2-Lookup Argument             | Ongoing |
+| **Optimization**                  |         |
+| Cycle-fold Delegated Circuit      | Ongoing |
+| Protostar Compressed Verification | Ongoing |
+| PLookup Argument                  | Ongoing |
+| logUp Argument                    | Ongoing |
+| Improving logUp Argument with GKR | Ongoing |
 
 <br />
 
@@ -32,3 +33,5 @@ As we know [the original Nova implementation](https://github.com/microsoft/Nova)
 [4] Multivariate lookup: https://eprint.iacr.org/2022/1530.pdf
 
 [5] Cached quotients: https://eprint.iacr.org/2022/1763.pdf
+
+[6] Improving logUp argument with GKR: https://eprint.iacr.org/2023/1284.pdf
