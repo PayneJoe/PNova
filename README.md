@@ -1,25 +1,38 @@
 # PNova
 
-As we know [the original Nova implementation](https://github.com/microsoft/Nova)  is based on R1CS. Our target is to implement a plonkish versioned NOVA, folding multiple Gate, Wiring, and Lookup instances into one respectively. Thereafter, we can feed the folded instances into Plonk SNARK.
+As we know [the original Nova implementation](https://github.com/microsoft/Nova)  is based on R1CS. Our target is to implement a plonkish versioned NOVA, folding multiple Gate, Wiring, and Lookup instances into one respectively. Thereafter, we can feed the folded instances into the relaxed Plonk SNARK.
+
+<br />
+
+## Details About Implementation
+
+Before intensive coding we will give more comprehensive details as much as possible, including some attestation code:
+- [Thinking in Folding Scheme: Cross Term in R1CS](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BJZPMjIfT)
+- [Thinking in Folding Scheme: Cross Term in Plonk](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/SkDf2nIzp)
+- [Thinking in Folding Scheme: Cycle Curves](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/r1bN8nLMp)
 
 <br />
 
 ## Roadmap
 
-| Features                          | Status  |
-| --------------------------------- | :-----: |
-| **Base Functionality**            |         |
-| Plonkish(gate+wiring) NIFS        | Ongoing |
-| Cycle-Curve Circuits              | Ongoing |
-| Simplified Plonkish NOVA          | Ongoing |
-| **Advanced Functionality**        |         |
-| Halo2-Lookup Argument             | Ongoing |
-| **Optimization**                  |         |
-| Cycle-fold Delegated Circuit      | Ongoing |
-| Protostar Compressed Verification | Ongoing |
-| PLookup Argument                  | Ongoing |
-| logUp Argument                    | Ongoing |
-| Improving logUp Argument with GKR | Ongoing |
+| Features                           | Status  |
+| ---------------------------------- | :-----: |
+| **Stage One**                      |         |
+| Uncompressed Relaxed Plonk Backend | Ongoing |
+| Plonkish(gate+wiring) NIFS         |  TODO   |
+| Cycle-Curve Circuits               |  TODO   |
+| Uncompressed Plonkish Nova         |  TODO   |
+| **Stage Two**                      |         |
+| Compressed Relaxed Plonk Backend   |  TODO   |
+| Compressed Plonkish NOVA           |  TODO   |
+| **Stage Three**                    |         |
+| Halo2-Lookup Argument              |  TODO   |
+| PLookup Argument                   |  TODO   |
+| **Stage Four**                     |         |
+| GKR Based Permutation Check        |  TODO   |
+| Cycle-fold Delegated Circuit       |  TODO   |
+| logUp Argument                     |  TODO   |
+| Improving logUp Argument with GKR  |  TODO   |
 
 <br />
 
