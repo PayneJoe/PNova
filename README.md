@@ -4,12 +4,19 @@ As we know [the original Nova implementation](https://github.com/microsoft/Nova)
 
 <br />
 
+##  Intuition About Plonkish Nova
+![Alt text](image-1.png)
+
+<br />
+
 ## Details About Implementation
 
 Before intensive coding we will give more comprehensive details as much as possible, including some attestation code:
 - [Thinking in Folding Scheme: Cross Term in R1CS](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BJZPMjIfT)
 - [Thinking in Folding Scheme: Cross Term in Plonk](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/SkDf2nIzp)
 - [Thinking in Folding Scheme: Cycle Curves](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/r1bN8nLMp)
+- [Relaxed Plonk Step by Step](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BkT0ayKmT)
+- [Plonk From Scratch](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/HJzwPUU7a)
 
 <br />
 
@@ -19,20 +26,19 @@ Before intensive coding we will give more comprehensive details as much as possi
 | ---------------------------------- | :-----: |
 | **Stage One**                      |         |
 | Uncompressed Relaxed Plonk Backend | Ongoing |
-| Plonkish(gate+wiring) NIFS         |  TODO   |
-| Cycle-Curve Circuits               |  TODO   |
-| Uncompressed Plonkish Nova         |  TODO   |
+| Uncompressed NIFS                  |  TODO   |
+| Uncompressed Cycle-Curve Circuits  |  TODO   |
 | **Stage Two**                      |         |
 | Compressed Relaxed Plonk Backend   |  TODO   |
-| Compressed Plonkish NOVA           |  TODO   |
+| compressed NIFS                    |  TODO   |
+| Compressed Cycle-Curve Circuits    |  TODO   |
 | **Stage Three**                    |         |
-| Halo2-Lookup Argument              |  TODO   |
-| PLookup Argument                   |  TODO   |
+| Add PLookup Argument               |  TODO   |
+| Add logUp Argument                 |  TODO   |
 | **Stage Four**                     |         |
-| GKR Based Permutation Check        |  TODO   |
 | Cycle-fold Delegated Circuit       |  TODO   |
-| logUp Argument                     |  TODO   |
 | Improving logUp Argument with GKR  |  TODO   |
+| GKR Based Permutation Check        |  TODO   |
 
 <br />
 
