@@ -26,15 +26,15 @@ Before intensive coding we will give more comprehensive details as much as possi
 | ---------------------------------- | :-----: |
 | **Stage One**                      |         |
 | Uncompressed Relaxed Plonk Backend | Ongoing |
-| Uncompressed NIFS                  |  TODO   |
+| Uncompressed NIFS                  | Ongoing |
 | Uncompressed Cycle-Curve Circuits  |  TODO   |
 | **Stage Two**                      |         |
+| Add PLookup Argument               |  TODO   |
+| Add logUp Argument                 |  TODO   |
+| **Stage Three**                    |         |
 | Compressed Relaxed Plonk Backend   |  TODO   |
 | compressed NIFS                    |  TODO   |
 | Compressed Cycle-Curve Circuits    |  TODO   |
-| **Stage Three**                    |         |
-| Add PLookup Argument               |  TODO   |
-| Add logUp Argument                 |  TODO   |
 | **Stage Four**                     |         |
 | Cycle-fold Delegated Circuit       |  TODO   |
 | Improving logUp Argument with GKR  |  TODO   |
