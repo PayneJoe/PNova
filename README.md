@@ -22,23 +22,22 @@ Before intensive coding we will give more comprehensive details as much as possi
 
 ## Roadmap
 
-| Features                           | Status  |
-| ---------------------------------- | :-----: |
-| **Stage One**                      |         |
-| Uncompressed Relaxed Plonk Backend | Ongoing |
-| Uncompressed NIFS                  | Ongoing |
-| Uncompressed Cycle-Curve Circuits  |  TODO   |
-| **Stage Two**                      |         |
-| Add PLookup Argument               |  TODO   |
-| Add logUp Argument                 |  TODO   |
-| **Stage Three**                    |         |
-| Compressed Relaxed Plonk Backend   |  TODO   |
-| compressed NIFS                    |  TODO   |
-| Compressed Cycle-Curve Circuits    |  TODO   |
-| **Stage Four**                     |         |
-| Cycle-fold Delegated Circuit       |  TODO   |
-| Improving logUp Argument with GKR  |  TODO   |
-| GKR Based Permutation Check        |  TODO   |
+| Features                                | Status  |
+| --------------------------------------- | :-----: |
+| **Stage One**                           |         |
+| Uncompressed Relaxed UltraPlonk Backend | Ongoing |
+| Compressed Relaxed UltraPlonk Backend   | Ongoing |
+| **Stage Two**                           |         |
+| Uncompressed NIFS                       |  TODO   |
+| Uncompressed Cycle-Curve Circuits       |  TODO   |
+| Support PLookup/LogUp Folding           |  TODO   |
+| **Stage Three**                         |         |
+| compressed NIFS                         |  TODO   |
+| Compressed Cycle-Curve Circuits         |  TODO   |
+| **Stage Four**                          |         |
+| Cycle-fold Delegated Circuit            |  TODO   |
+| Improving logUp Argument with GKR       |  TODO   |
+| GKR Based Permutation Check             |  TODO   |
 
 <br />
 
