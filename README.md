@@ -1,6 +1,6 @@
 # PNova
 
-As we know [the original Nova implementation](https://github.com/microsoft/Nova)  is based on R1CS. Our target is to implement a plonkish versioned NOVA, folding multiple Gate, Wiring, and Lookup instances into one respectively. Thereafter, we can feed the folded instances into the relaxed Plonk SNARK.
+As we know [the original Nova implementation](https://github.com/microsoft/Nova)  is based on R1CS. Our target is to implement a plonkish versioned NOVA, folding multiple Customer Gate/Lookup instances into one respectively. Thereafter, we can feed the folded instances into the relaxed Plonk SNARK.
 
 <br />
 
@@ -36,6 +36,7 @@ Before intensive coding we will give more comprehensive details as much as possi
 | **Stage Four**                          |         |                                                                                |                                                                                   |
 | Cycle-fold Delegated Circuit            |  TODO   |                                                                                |                                                                                   |
 | Improving logUp Argument with GKR       |  TODO   |                                                                                |                                                                                   |
+| Memory Check Based Lookup Argument      |  TODO   |                                                                                |                                                                                   |
 | GKR Based Permutation Check             |  TODO   |                                                                                |                                                                                   |
 
 <br />
