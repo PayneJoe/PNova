@@ -15,29 +15,28 @@ Before intensive coding we will give more comprehensive details as much as possi
 - [Thinking in Folding Scheme: Cross Term in R1CS](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BJZPMjIfT)
 - [Thinking in Folding Scheme: Cross Term in Plonk](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/SkDf2nIzp)
 - [Thinking in Folding Scheme: Cycle Curves](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/r1bN8nLMp)
-- [Relaxed Plonk Step by Step](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BkT0ayKmT)
 - [Plonk From Scratch](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/HJzwPUU7a)
 
 <br />
 
 ## Roadmap
 
-| Features                                | Status  |
-| --------------------------------------- | :-----: |
-| **Stage One**                           |         |
-| Uncompressed Relaxed UltraPlonk Backend | Ongoing |
-| Compressed Relaxed UltraPlonk Backend   | Ongoing |
-| **Stage Two**                           |         |
-| Uncompressed NIFS                       |  TODO   |
-| Uncompressed Cycle-Curve Circuits       |  TODO   |
-| Support PLookup/LogUp Folding           |  TODO   |
-| **Stage Three**                         |         |
-| compressed NIFS                         |  TODO   |
-| Compressed Cycle-Curve Circuits         |  TODO   |
-| **Stage Four**                          |         |
-| Cycle-fold Delegated Circuit            |  TODO   |
-| Improving logUp Argument with GKR       |  TODO   |
-| GKR Based Permutation Check             |  TODO   |
+| Features                                | Status  |                                      Repo                                      |                                        Doc                                        |
+| --------------------------------------- | :-----: | :----------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
+| **Stage One**                           |         |                                                                                |                                                                                   |
+| Uncompressed Relaxed UltraPlonk Backend | Ongoing | [relaxed-stage-1](https://github.com/ZKMod-Lab/jellyfish/tree/relaxed-stage-1) | [Relaxed Plonk Step by Step](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BkT0ayKmT) |
+| Compressed Relaxed UltraPlonk Backend   | Ongoing |                                                                                |                                                                                   |
+| **Stage Two**                           |         |                                                                                |                                                                                   |
+| Uncompressed NIFS                       |  TODO   |                                                                                |                                                                                   |
+| Uncompressed Cycle-Curve Circuits       |  TODO   |                                                                                |                                                                                   |
+| Support PLookup/LogUp Folding           |  TODO   |                                                                                |                                                                                   |
+| **Stage Three**                         |         |                                                                                |                                                                                   |
+| compressed NIFS                         |  TODO   |                                                                                |                                                                                   |
+| Compressed Cycle-Curve Circuits         |  TODO   |                                                                                |                                                                                   |
+| **Stage Four**                          |         |                                                                                |                                                                                   |
+| Cycle-fold Delegated Circuit            |  TODO   |                                                                                |                                                                                   |
+| Improving logUp Argument with GKR       |  TODO   |                                                                                |                                                                                   |
+| GKR Based Permutation Check             |  TODO   |                                                                                |                                                                                   |
 
 <br />
 
