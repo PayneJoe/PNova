@@ -38,6 +38,20 @@ Before intensive coding we will give more comprehensive details as much as possi
 | Improving logUp Argument with GKR       |  TODO   |                                                                                |                                                                                   |
 | Memory Check Based Lookup Argument      |  TODO   |                                                                                |                                                                                   |
 | GKR Based Permutation Check             |  TODO   |                                                                                |                                                                                   |
+<br />
+
+## Progress of Specific Task
+| Day      | Task                           | Status       |
+| -------- | ------------------------------ | ------------ |
+| 11/08/23 | Relaxed Plonk / Data Structure | $\checkmark$ |
+| 11/09/23 | Relaxed Plonk / FrontEnd       | -            |
+| 11/10/23 | Relaxed Plonk / FrontEnd       | $\checkmark$ |
+| 11/11/23 | Relaxed Plonk / BackEnd        | -            |
+| 11/12/23 | Relaxed Plonk / BackEnd        | -            |
+| 11/13/23 | Relaxed Plonk / BackEnd        | -            |
+| 11/14/23 | Relaxed Plonk / Testing        | -            |
+| 11/15/23 | Relaxed Plonk / Testing        | -            |
+| 11/16/23 | Relaxed Plonk / Testing        | -            |
 
 <br />
 
