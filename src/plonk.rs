@@ -361,11 +361,7 @@ mod tests {
     use jf_primitives::pcs::errors::PCSError;
     use jf_utils::test_rng;
 
-    #[test]
-    fn end_to_end_test_template<E>() -> Result<(), PCSError>
-    where
-        E: Pairing,
-    {
+    fn end_to_end_test_template<E: Pairing>() -> Result<(), PCSError> {
         // let rng = &mut test_rng();
         // for _ in 0..100 {
         //     let mut degree = 0;
