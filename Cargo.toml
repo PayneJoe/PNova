@@ -6,6 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0"
+ark-bls12-377 = "0.4.0"
+ark-bls12-381 = "0.4.0"
+ark-bn254 = "0.4.0"
+ark-bw6-761 = "0.4.0"
 ark-ec = "0.4"
 ark-poly = "0.4"
 jf_plonk = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-plonk", branch = "relaxed-stage-1" }
