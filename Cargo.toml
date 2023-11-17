@@ -7,14 +7,25 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0"
+serde = "1.0"
+thiserror = "1.0"
+rand_chacha = { version = "0.3.1", default-features = false }
+
+## arkworks
 ark-bls12-377 = "0.4.0"
 ark-bls12-381 = "0.4.0"
 ark-bn254 = "0.4.0"
 ark-bw6-761 = "0.4.0"
 ark-ec = "0.4"
 ark-poly = "0.4"
-jf_plonk = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-plonk", branch = "relaxed-stage-1" }
-jf_primitives = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-primitives", branch = "relaxed-stage-1" }
-jf_utils = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-utils", branch = "relaxed-stage-1" }
-serde = "1.0"
-thiserror = "1.0"
+ark-ff = { version = "0.4.0", features = [ "asm" ] }
+ark-std = { version = "0.4.0", default-features = false }
+
+## jellyfish
+# jf_plonk = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-plonk", branch = "relaxed-stage-1" }
+# jf_primitives = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-primitives", branch = "relaxed-stage-1" }
+# jf_utils = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-utils", branch = "relaxed-stage-1" }
+
+jf_plonk = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-plonk"}
+jf_primitives = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives"}
+jf_utils = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-utils"}
