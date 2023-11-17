@@ -6,8 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ark-ec = "0.4.0"
-ark-poly = "0.4.0"
-jf_plonk = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-plonk" }
-jf_primitives = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives"}
-jf_utils = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-utils"}
+ark-ec = "0.4"
+ark-poly = "0.4"
+jf_plonk = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-plonk", branch = "relaxed-stage-1" }
+jf_primitives = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-primitives", branch = "relaxed-stage-1" }
+jf_utils = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-utils", branch = "relaxed-stage-1" }
+serde = "1.0"
+thiserror = "1.0"

@@ -10,7 +10,9 @@ use ark_poly::{
 };
 use jf_primitives::pcs::prelude::{Commitment, UnivariateKzgPCS};
 use jf_utils::par_utils::parallelizable_slice_iter;
+use serde::{Deserialize, Serialize};
 
+use std::marker::PhantomData;
 /// Public parameters for a given PLONK
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(bound = "")]
@@ -29,22 +31,22 @@ pub struct PLONKShape<E: Pairing> {
     pub(crate) num_public_input: usize,
 
     // PLONK selectors
-    pub(crate) q_c: Vec<E::ScalarFieldField>,
+    pub(crate) q_c: Vec<E::ScalarField>,
     // with length 5 or 6
-    pub(crate) q_lc: Vec<Vec<E::ScalarFieldField>>,
+    pub(crate) q_lc: Vec<Vec<E::ScalarField>>,
     // with length 2
-    pub(crate) q_mul: Vec<Vec<E::ScalarFieldField>>,
-    pub(crate) q_ecc: Vec<E::ScalarFieldField>,
-    pub(crate) q_hash: Vec<E::ScalarFieldField>,
-    pub(crate) q_o: Vec<E::ScalarFieldField>,
-    pub(crate) q_e: Vec<E::ScalarFieldField>,
+    pub(crate) q_mul: Vec<Vec<E::ScalarField>>,
+    pub(crate) q_ecc: Vec<E::ScalarField>,
+    pub(crate) q_hash: Vec<E::ScalarField>,
+    pub(crate) q_o: Vec<E::ScalarField>,
+    pub(crate) q_e: Vec<E::ScalarField>,
 }
 
 /// A type that holds witness vectors for a given PLONK instance
 /// The size of wire list is 5 for TurboPlonk, and 6 for UltraPlonk
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PLONKWitness<E: Pairing> {
-    W: Vec<Vec<E::ScalarFieldField>>,
+    W: Vec<Vec<E::ScalarField>>,
 }
 
 /// A type that holds an PLONK instance
@@ -52,14 +54,14 @@ pub struct PLONKWitness<E: Pairing> {
 #[serde(bound = "")]
 pub struct PLONKInstance<E: Pairing> {
     pub(crate) comm_W: Vec<Commitment<E>>,
-    pub(crate) X: Vec<E::ScalarFieldField>,
+    pub(crate) X: Vec<E::ScalarField>,
 }
 
 /// A type that holds a witness for a given Relaxed PLONK instance
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RelaxedPLONKWitness<E: Pairing> {
-    pub(crate) W: Vec<Vec<E::ScalarFieldField>>,
-    pub(crate) E: Vec<E::ScalarFieldField>,
+    pub(crate) W: Vec<Vec<E::ScalarField>>,
+    pub(crate) E: Vec<E::ScalarField>,
 }
 
 /// A type that holds a Relaxed PLONK instance
@@ -68,8 +70,8 @@ pub struct RelaxedPLONKWitness<E: Pairing> {
 pub struct RelaxedPLONKInstance<E: Pairing> {
     pub(crate) comm_W: Vec<Commitment<E>>,
     pub(crate) comm_E: Commitment<E>,
-    pub(crate) X: Vec<E::ScalarFieldField>,
-    pub(crate) u: E::ScalarFieldField,
+    pub(crate) X: Vec<E::ScalarField>,
+    pub(crate) u: E::ScalarField,
 }
 
 // impl<E: Pairing> PLONK<E> {
@@ -85,20 +87,20 @@ pub struct RelaxedPLONKInstance<E: Pairing> {
 impl<E: Pairing> PLONKShape<E> {
     fn new(
         num_cons: usize,
-        num_vars: usize,
+        num_wire_types: usize,
         num_public_input: usize,
-        q_c: Vec<E::ScalarFieldField>,
-        q_lc: Vec<Vec<E::ScalarFieldField>>,
-        q_mul: Vec<Vec<E::ScalarFieldField>>,
-        q_ecc: Vec<E::ScalarFieldField>,
-        q_hash: Vec<E::ScalarFieldField>,
-        q_o: Vec<E::ScalarFieldField>,
-        q_e: Vec<E::ScalarFieldField>,
+        q_c: Vec<E::ScalarField>,
+        q_lc: Vec<Vec<E::ScalarField>>,
+        q_mul: Vec<Vec<E::ScalarField>>,
+        q_ecc: Vec<E::ScalarField>,
+        q_hash: Vec<E::ScalarField>,
+        q_o: Vec<E::ScalarField>,
+        q_e: Vec<E::ScalarField>,
     ) -> Result<PLONKShape<E>, NovaError> {
         // ....
         Ok(PLONKShape {
             num_cons,
-            num_vars,
+            num_wire_types,
             num_public_input,
             q_c: q_c.to_owned(),
             q_lc: q_lc.to_owned(),
@@ -113,7 +115,7 @@ impl<E: Pairing> PLONKShape<E> {
     /// Checks if the Relaxed PLONK instance is satisfiable given a witness and its shape
     pub fn is_sat_relaxed(
         &self,
-        ck: &CommitmentKey<E>,
+        ck: E::ScalarField, // &CommitmentKey<E>,
         U: &RelaxedPLONKInstance<E>,
         W: &RelaxedPLONKWitness<E>,
     ) -> Result<(), NovaError> {
@@ -123,7 +125,7 @@ impl<E: Pairing> PLONKShape<E> {
     /// Checks if the PLONK instance is satisfiable given a witness and its shape
     pub fn is_sat(
         &self,
-        ck: &CommitmentKey<E>,
+        ck: E::ScalarField, // &CommitmentKey<E>,
         U: &PLONKInstance<E>,
         W: &PLONKWitness<E>,
     ) -> Result<(), NovaError> {
@@ -134,22 +136,19 @@ impl<E: Pairing> PLONKShape<E> {
     /// Relaxed PLONK instance-witness pair and an PLONK instance-witness pair
     pub fn commit_T(
         &self,
-        ck: &CommitmentKey<E>,
+        ck: E::ScalarField, // &CommitmentKey<E>,
         U1: &RelaxedPLONKInstance<E>,
         W1: &RelaxedPLONKWitness<E>,
         U2: &PLONKInstance<E>,
         W2: &PLONKWitness<E>,
-    ) -> Result<(Vec<E::ScalarFieldField>, Commitment<E>), NovaError> {
+    ) -> Result<(Vec<E::ScalarField>, Commitment<E>), NovaError> {
         //
     }
 }
 
 impl<E: Pairing> PLONKWitness<E> {
     /// A method to create a witness object using a vector of scalars
-    pub fn new(
-        S: &PLONKShape<E>,
-        W: &[[E::ScalarFieldField]],
-    ) -> Result<PLONKWitness<E>, NovaError> {
+    pub fn new(S: &PLONKShape<E>, W: &[[E::ScalarField]]) -> Result<PLONKWitness<E>, NovaError> {
         if S.num_wire_types != W.len() {
             Err(NovaError::InvalidWireTypes)
         } else {
@@ -158,8 +157,8 @@ impl<E: Pairing> PLONKWitness<E> {
     }
 
     /// Commits to the witness using the supplied generators
-    pub fn commit(&self, ck: &CommitmentKey<E>) -> Commitment<E> {
-        CE::<E>::commit(ck, &self.W)
+    pub fn commit(&self, ck: E::ScalarField) -> Commitment<E> {
+        // CE::<E>::commit(ck, &self.W)
     }
 }
 
@@ -168,7 +167,7 @@ impl<E: Pairing> PLONKInstance<E> {
     pub fn new(
         S: &PLONKShape<E>,
         comm_W: &[Commitment<E>],
-        X: &[E::ScalarFieldField],
+        X: &[E::ScalarField],
     ) -> Result<PLONKInstance<E>, NovaError> {
         if S.num_public_input != X.len() {
             Err(NovaError::InvalidPublicInput)
@@ -182,14 +181,14 @@ impl<E: Pairing> PLONKInstance<E> {
 }
 
 ////////////////////////////////////////////
-impl<E: Pairing> AbsorbInROTrait<E> for PLONKInstance<E> {
-    // fn absorb_in_ro(&self, ro: &mut E::RO) {
-    //     self.comm_W.absorb_in_ro(ro);
-    //     for x in &self.X {
-    //         ro.absorb(scalar_as_base::<E>(*x));
-    //     }
-    // }
-}
+// impl<E: Pairing> AbsorbInROTrait<E> for PLONKInstance<E> {
+//     // fn absorb_in_ro(&self, ro: &mut E::RO) {
+//     //     self.comm_W.absorb_in_ro(ro);
+//     //     for x in &self.X {
+//     //         ro.absorb(scalar_as_base::<E>(*x));
+//     //     }
+//     // }
+// }
 
 impl<E: Pairing> RelaxedPLONKWitness<E> {
     /// Produces a default RelaxedPLONKWitness given an PLONKShape
@@ -360,12 +359,11 @@ impl<G: Pairing> AbsorbInROTrait<E> for RelaxedPLONKInstance<E> {
 
 #[cfg(test)]
 pub(crate) mod test {
+    use jf_primitives::pcs::errors::PCSError;
     use jf_utils::test_rng;
 
-    fn end_to_end_test_template<E>() -> Result<(), PCSError>
-    where
-        E: Pairing,
-    {
+    #[test]
+    fn end_to_end_test_template() -> Result<(), PCSError> {
         let rng = &mut test_rng();
         for _ in 0..100 {
             let mut degree = 0;
