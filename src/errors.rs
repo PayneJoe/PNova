@@ -5,6 +5,9 @@ use thiserror::Error;
 /// Errors returned by Nova
 #[derive(Clone, Debug, Eq, PartialEq, Error)]
 pub enum NovaError {
+    /// TODO
+    #[error("TODO")]
+    TODO,
     /// returned if the supplied number of public input not satsfied
     #[error("InvalidPublicInput")]
     InvalidNumPublicInput,
