@@ -2,14 +2,14 @@
 ///
 use crate::errors::NovaError;
 use crate::traits::Group;
-use crate::{Commitment, CommitmentKey, CE};
+use crate::{Commitment};
 
 // arkworks
-use ark_bls12_381::Bls12_381;
-use ark_ec::pairing::Pairing;
-use ark_ff::{FftField, Field};
-use ark_poly::{univariate::DensePolynomial, DenseUVPolynomial, Radix2EvaluationDomain};
-use ark_std::{format, marker::PhantomData};
+
+
+
+
+use ark_std::{marker::PhantomData};
 
 // // jellyfish
 // use jf_plonk::{
@@ -23,7 +23,7 @@ use ark_std::{format, marker::PhantomData};
 // };
 
 // others
-use rand_chacha::ChaCha20Rng;
+
 use serde::{Deserialize, Serialize};
 
 /// Public parameters for a given PLONK
@@ -139,9 +139,9 @@ where
     /// Checks if the Relaxed PLONK instance is satisfiable given a witness and its shape
     pub fn is_sat_relaxed(
         &self,
-        ck: G::Scalar, // &CommitmentKey<G>,
-        U: &RelaxedPLONKInstance<G>,
-        W: &RelaxedPLONKWitness<G>,
+        _ck: G::Scalar, // &CommitmentKey<G>,
+        _U: &RelaxedPLONKInstance<G>,
+        _W: &RelaxedPLONKWitness<G>,
     ) -> Result<(), NovaError> {
         //
         Ok(())
@@ -150,9 +150,9 @@ where
     /// Checks if the PLONK instance is satisfiable given a witness and its shape
     pub fn is_sat(
         &self,
-        ck: G::Scalar, // &CommitmentKey<G>,
-        U: &PLONKInstance<G>,
-        W: &PLONKWitness<G>,
+        _ck: G::Scalar, // &CommitmentKey<G>,
+        _U: &PLONKInstance<G>,
+        _W: &PLONKWitness<G>,
     ) -> Result<(), NovaError> {
         //
         Ok(())
@@ -162,11 +162,11 @@ where
     /// Relaxed PLONK instance-witness pair and an PLONK instance-witness pair
     pub fn commit_T(
         &self,
-        ck: G::Scalar, // &CommitmentKey<G>,
-        U1: &RelaxedPLONKInstance<G>,
-        W1: &RelaxedPLONKWitness<G>,
-        U2: &PLONKInstance<G>,
-        W2: &PLONKWitness<G>,
+        _ck: G::Scalar, // &CommitmentKey<G>,
+        _U1: &RelaxedPLONKInstance<G>,
+        _W1: &RelaxedPLONKWitness<G>,
+        _U2: &PLONKInstance<G>,
+        _W2: &PLONKWitness<G>,
     ) -> Result<(Vec<G::Scalar>, Commitment<G>), NovaError> {
         //
         Err(NovaError::TODO)
