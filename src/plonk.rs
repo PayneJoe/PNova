@@ -2,14 +2,11 @@
 ///
 use crate::errors::NovaError;
 use crate::traits::Group;
-use crate::{Commitment};
+use crate::Commitment;
 
 // arkworks
 
-
-
-
-use ark_std::{marker::PhantomData};
+use ark_std::marker::PhantomData;
 
 // // jellyfish
 // use jf_plonk::{
