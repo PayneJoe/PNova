@@ -1,3 +1,6 @@
+#![allow(unused_imports)]// remove this later.
+#![allow(non_snake_case, unused)]
+#![allow(clippy::too_many_arguments)]
 pub mod circuit;
 pub mod errors;
 pub mod nifs;
