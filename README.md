@@ -9,6 +9,13 @@ As we know [the original Nova implementation](https://github.com/microsoft/Nova)
 
 <br />
 
+## Tasks Towards Plonkish Nova
+- Jellyfish(TurboPlonk/UltraPlonk) supporting relaxed plonkish circuit SAT
+- KZG commitment supporting BN254/Grumpkin
+- Poseidon Circuit based Jellyfish
+- Transcript based Poseidon 
+- Convert verification on Grumpkin (second curve) into verification on BN254?
+
 ## Details About Implementation
 
 Before intensive coding we will give more comprehensive details as much as possible, including some attestation code:
@@ -48,6 +55,9 @@ Before intensive coding we will give more comprehensive details as much as possi
 | 11/12/23 | Relaxed Plonk / Frontend Testing | $\checkmark$ |
 | 11/15/23 | Relaxed Plonk / Backend Dev      | $\checkmark$ |
 | 11/16/23 | Relaxed Plonk / Backend Testing  | -            |
+| 11/20/23 | Poseidon Circuit Dev             | -            |
+| 11/22/23 | PCS Design                       | -            |
+| 11/23/23 | Cycle-Curve Circuit Design       | -            |
 
 <br />
 
