@@ -71,7 +71,7 @@ where
         self.state.push(e);
     }
 
-    /// Compute a challenge by hashing the current state
+    /// output a scalar field through sponge API, this is time consuming
     fn squeeze(&mut self, num_bits: usize) -> Scalar {
         // check if we have squeezed already
         assert!(!self.squeezed, "Cannot squeeze again after squeezing");
@@ -90,7 +90,7 @@ where
         let hash = SpongeAPI::squeeze(&mut sponge, 1, acc);
         sponge.finish(acc).unwrap();
 
-        // Only return `num_bits`
+        // Only return `num_bits`, and convert bits into a scalar field
         let bits = hash[0].to_le_bits();
         let mut res = Scalar::ZERO;
         let mut coeff = Scalar::ONE;

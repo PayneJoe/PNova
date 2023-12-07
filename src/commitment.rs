@@ -46,7 +46,7 @@ pub trait CommitmentTrait<G: Group>:
     + TranscriptReprTrait<G>
     + Serialize
     + for<'de> Deserialize<'de>
-    // + AbsorbInROTrait<G>
+    + AbsorbInROTrait<G>
     + CommitmentOps
     + CommitmentOpsOwned
     + ScalarMul<G::Scalar>
@@ -56,8 +56,8 @@ pub trait CommitmentTrait<G: Group>:
         + Debug
         + PartialEq
         + Eq
-        + Send
-        + Sync
+        // + Send
+        // + Sync
         + TranscriptReprTrait<G>
         + Serialize
         + for<'de> Deserialize<'de>;

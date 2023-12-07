@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////// grumpkin curve implementation for cycle fold
-// for from_uniform_bytes
-use ff::FromUniformBytes;
+// for from_uniform_bytes/to_repr
+use ff::{FromUniformBytes, PrimeField};
 use halo2curves::grumpkin::{
     Fq as GrumpkinBase, Fr as GrumpkinScalar, G1Affine as GrumpkinAffine,
     G1Compressed as GrumpkinCompressed, G1 as GrumpkinPoint,
@@ -13,6 +13,7 @@ use crate::{
     group::{CompressedGroup, Group, PrimeFieldExt},
     keccak_transcript::Keccak256Transcript,
     poseidon_ro::PoseidonRO,
+    transcript::TranscriptReprTrait,
 };
 
 impl Group for GrumpkinPoint {
@@ -82,5 +83,23 @@ impl CompressedGroup for GrumpkinCompressed {
         // from_bytes comes from trait pasta_curves::group::GroupEncoding
         // from_bytes -> impl pasta_curves::group::GroupEncoding for GrumpkinPoint
         Some(GrumpkinPoint::from_bytes(&self).unwrap())
+    }
+}
+
+impl<G: Group> TranscriptReprTrait<G> for GrumpkinCompressed {
+    fn to_transcript_bytes(&self) -> Vec<u8> {
+        self.as_ref().to_vec()
+    }
+}
+
+impl<G: Group> TranscriptReprTrait<G> for GrumpkinBase {
+    fn to_transcript_bytes(&self) -> Vec<u8> {
+        self.to_repr().to_vec()
+    }
+}
+
+impl<G: Group> TranscriptReprTrait<G> for GrumpkinScalar {
+    fn to_transcript_bytes(&self) -> Vec<u8> {
+        self.to_repr().to_vec()
     }
 }

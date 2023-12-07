@@ -1,3 +1,4 @@
+////////////////////////////////////////////////// group trait for curves
 /// standard lib
 use core::fmt::Debug;
 use core::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
@@ -8,7 +9,11 @@ use num_bigint::BigInt;
 use serde::{Deserialize, Serialize};
 
 // custom defined lib
-use crate::{error::MyError, ro::ROTrait, transcript::TranscriptEngineTrait};
+use crate::{
+    error::MyError,
+    ro::ROTrait,
+    transcript::{TranscriptEngineTrait, TranscriptReprTrait},
+};
 
 /////////////////////////////////////////// PrimeField for scalar field
 /// truncate input bytes into fixed length bytes array before converting to PrimeField if necessary
@@ -49,7 +54,14 @@ impl<T, Rhs, Output> ScalarMulOwned<Rhs, Output> for T where T: for<'r> ScalarMu
 /////////////////////////////////////////// compressed point
 /// output x-coordinate along with the sign y-coordinate provided a AffinePoint (x, y)
 pub trait CompressedGroup:
-    Copy + Clone + Debug + Eq + Sized + Serialize + for<'de> Deserialize<'de>
+    Copy
+    + Clone
+    + Debug
+    + Eq
+    + Sized
+    + Serialize
+    + for<'de> Deserialize<'de>
+    + TranscriptReprTrait<Self::GroupElement>
 {
     /// A type that holds the decompressed version of the compressed group element
     type GroupElement: Group + Serialize + for<'de> Deserialize<'de>;
@@ -73,10 +85,18 @@ pub trait Group:
     + for<'de> Deserialize<'de>
 {
     // field type: inner type representing scalar field of group element (#E(Fp))
-    type Scalar: PrimeFieldExt + PrimeFieldBits + Serialize + for<'de> Deserialize<'de>;
+    type Scalar: PrimeFieldExt
+        + PrimeFieldBits
+        + Serialize
+        + for<'de> Deserialize<'de>
+        + TranscriptReprTrait<Self>;
 
     // field type: inner type representing base field of group element (Fp)
-    type Base: PrimeField + PrimeFieldBits + Serialize + for<'de> Deserialize<'de>;
+    type Base: PrimeField
+        + PrimeFieldBits
+        + Serialize
+        + for<'de> Deserialize<'de>
+        + TranscriptReprTrait<Self>;
 
     // point type: inner type representing compressed group element (E(Fp))
     type CompressedGroupElement: CompressedGroup<GroupElement = Self>;
