@@ -6,44 +6,17 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0"
+# ff = { version = "0.13.0", default-features = false, features = ["std"] }
+ff = { version = "0.13", features = ["derive"] }
+ark-ff = { version = "0.4"}
+rand = "0.8"
+num-bigint = { version = "0.4", default-features = false }
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
-rand_chacha = { version = "0.3.1", default-features = false }
-digest = "0.10.7"
 sha3 = "0.10"
-rayon = "1.7"
-num-traits = "0.2"
-generic-array = "1.0.0"
-
-## numberics 
-ff = { version = "0.13.0", features = ["derive"] }
-num-bigint = { version = "0.4", features = ["serde", "rand"] }
-neptune = { version = "13.0.0", default-features = false }
-
-## arkworks
-ark-bls12-377 = "0.4.0"
-ark-bls12-381 = "0.4.0"
-ark-bn254 = "0.4.0"
-ark-bw6-761 = "0.4.0"
-ark-ec = "0.4"
-ark-poly = "0.4"
-ark-ff = { version = "0.4.0", features = [ "asm" ] }
-ark-std = { version = "0.4.0", default-features = false }
-
-##  
 halo2curves = { version = "0.4.0", features = ["derive_serde"] }
 pasta_curves = { version = "0.5", features = ["repr-c", "serde"] }
-
-## jellyfish
-# jf_plonk = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-plonk", branch = "relaxed-stage-1" }
-# jf_primitives = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-primitives", branch = "relaxed-stage-1" }
-# jf_utils = { git = "https://github.com/ZKMod-Lab/jellyfish", package = "jf-utils", branch = "relaxed-stage-1" }
-
-# jf_plonk = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-plonk"}
-# jf_primitives = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives"}
-# jf_utils = { git = "https://github.com/EspressoSystems/jellyfish", package = "jf-utils"}
-
-[dev-dependencies]
-rand = "0.8.4"
-hex = "0.4.3"
+rayon = "1.7"
+group = "0.13.0"
+num-traits = "0.2"
+digest = "0.10"
