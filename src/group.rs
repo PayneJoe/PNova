@@ -8,7 +8,7 @@ use num_bigint::BigInt;
 use serde::{Deserialize, Serialize};
 
 // custom defined lib
-use crate::{error::MyError, transcript::TranscriptEngineTrait};
+use crate::{error::MyError, ro::ROTrait, transcript::TranscriptEngineTrait};
 
 /////////////////////////////////////////// PrimeField for scalar field
 /// truncate input bytes into fixed length bytes array before converting to PrimeField if necessary
@@ -85,7 +85,7 @@ pub trait Group:
     type PreprocessedGroupElement: Clone + Debug + Serialize + for<'de> Deserialize<'de>;
 
     // hash type: inner type representing hasher for the purpose of folding factor (#E(Fp))
-    // type RO: ROTrait<Self::Base, Self::Scalar> + Serialize + for<'de> Deserialize<'de>;
+    type RO: ROTrait<Self::Base, Self::Scalar> + Serialize + for<'de> Deserialize<'de>;
 
     // hash type: inner type representing hasher for Fiat-Shamir transcript
     type TE: TranscriptEngineTrait<Self>;

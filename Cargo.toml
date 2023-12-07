@@ -20,3 +20,5 @@ rayon = "1.7"
 group = "0.13.0"
 num-traits = "0.2"
 digest = "0.10"
+generic-array = "1.0.0"
+neptune = { version = "13.0.0", default-features = false }

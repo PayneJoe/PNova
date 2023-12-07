@@ -21,10 +21,11 @@ use std::io::Read;
 use rayon::prelude::*;
 
 // local libs
-use crate::keccak_transcript::Keccak256Transcript;
-use crate::utils::*;
 use crate::{
+    exponentiation::*,
     group::{CompressedGroup, Group, PrimeFieldExt},
+    keccak_transcript::Keccak256Transcript,
+    poseidon_ro::PoseidonRO,
     transcript::TranscriptReprTrait,
 };
 
@@ -33,7 +34,7 @@ impl Group for Bn256Point {
     type Scalar = Bn256Scalar;
     type CompressedGroupElement = Bn256Compressed;
     type PreprocessedGroupElement = Bn256Affine;
-    // type RO = PoseidonRO<Self::Base, Self::Scalar>;
+    type RO = PoseidonRO<Self::Base, Self::Scalar>;
     type TE = Keccak256Transcript<Self>;
 
     fn vartime_multiscalar_mul(

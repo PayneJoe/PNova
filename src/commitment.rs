@@ -30,10 +30,10 @@ impl<T, Rhs, Output> CommitmentOpsOwned<Rhs, Output> for T where
 }
 
 /////////////////////////////////////////////// A helper trait to absorb different objects in RO
-// pub trait AbsorbInROTrait<G: Group> {
-//     /// Absorbs the value in the provided RO
-//     fn absorb_in_ro(&self, ro: &mut G::RO);
-// }
+pub trait AbsorbInROTrait<G: Group> {
+    /// Absorbs the value in the provided RO
+    fn absorb_in_ro(&self, ro: &mut G::RO);
+}
 
 /////////////////////////////////////////////// This trait defines the behavior of the commitment
 pub trait CommitmentTrait<G: Group>:

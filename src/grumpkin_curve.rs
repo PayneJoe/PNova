@@ -9,15 +9,18 @@ use num_bigint::BigInt;
 // for from_bytes
 use pasta_curves::group::GroupEncoding;
 
-use crate::group::{CompressedGroup, Group, PrimeFieldExt};
-use crate::keccak_transcript::Keccak256Transcript;
+use crate::{
+    group::{CompressedGroup, Group, PrimeFieldExt},
+    keccak_transcript::Keccak256Transcript,
+    poseidon_ro::PoseidonRO,
+};
 
 impl Group for GrumpkinPoint {
     type Base = GrumpkinBase;
     type Scalar = GrumpkinScalar;
     type CompressedGroupElement = GrumpkinCompressed;
     type PreprocessedGroupElement = GrumpkinAffine;
-    // type RO = PoseidonRO<Self::Base, Self::Scalar>;
+    type RO = PoseidonRO<Self::Base, Self::Scalar>;
     type TE = Keccak256Transcript<Self>;
 
     fn vartime_multiscalar_mul(
