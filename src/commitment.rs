@@ -7,6 +7,8 @@ use core::ops::{Add, AddAssign};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 
+// use jf_primitives::pcs::StructuredReferenceString;
+
 /////////////////////////////////////  trait bounds on commitment (point on base field)
 /// com_a + com_b/com_a += com_b
 pub trait CommitmentOps<Rhs = Self, Output = Self>:
@@ -74,6 +76,7 @@ pub trait CommitmentTrait<G: Group>:
 
 /////////////////////////////////////////////// A trait that ties different pieces of the commitment generation together
 pub trait CommitmentEngineTrait<G: Group>: Clone + Serialize + for<'de> Deserialize<'de> {
+    // type SRS: Clone + Debug + StructuredReferenceString<G>;
     /// Holds the type of the commitment key
     type CommitmentKey: Clone + Debug + Serialize + for<'de> Deserialize<'de>;
 

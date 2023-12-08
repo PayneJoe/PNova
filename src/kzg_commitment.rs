@@ -188,6 +188,7 @@ pub struct KZGCommitmentEngine<G: Group> {
 }
 
 impl<G: Group> CommitmentEngineTrait<G> for KZGCommitmentEngine<G> {
+    // commitment key is also called proving key, while the verifying key is not needed on prover side
     type CommitmentKey = CommitmentKey<G>;
     type Commitment = Commitment<G>;
 

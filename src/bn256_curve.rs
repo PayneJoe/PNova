@@ -54,7 +54,8 @@ impl Group for Bn256Point {
         self.to_affine()
     }
 
-    /// generate n randomized points using shake256 hash
+    /// for the purpose of universal setup
+    /// generate n randomized points through shake256 hash
     fn from_label(label: &'static [u8], n: usize) -> Vec<Self::PreprocessedGroupElement> {
         let mut shake = Shake256::default();
         shake.update(label);
