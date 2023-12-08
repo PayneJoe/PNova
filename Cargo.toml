@@ -6,19 +6,23 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ff = { version = "0.13", features = ["derive"] }
 rand = "0.8"
-num-bigint = { version = "0.4", default-features = false }
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
 sha3 = "0.10"
-halo2curves = { version = "0.4.0", features = ["derive_serde"] }
-pasta_curves = { version = "0.5", features = ["repr-c", "serde"] }
 rayon = "1.7"
-group = "0.13.0"
 num-traits = "0.2"
 digest = "0.10"
 generic-array = "1.0.0"
-neptune = { version = "13.0.0", default-features = false }
-## main branch (tag=0.4.0) of jellyfish use https://github.com/EspressoSystems/blst.git which is not compatible with neptune/filecoin used 
-jf_primitives = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives", tag = "0.3.0"}
+
+ark-crypto-primitives = "0.4.0"
+jf_primitives = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives"}
+
+# num-bigint = { version = "0.4", default-features = false }
+# ff = { version = "0.13", features = ["derive"] }
+# group = "0.13.0"
+# neptune = { version = "13.0.0", default-features = false }
+# halo2curves = { version = "0.4.0", features = ["derive_serde"] }
+# pasta_curves = { version = "0.5", features = ["repr-c", "serde"] }
+# ## main branch (tag=0.4.0) of jellyfish use https://github.com/EspressoSystems/blst.git which is not compatible with neptune/filecoin used 
+# jf_primitives = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives", tag = "0.3.0"}
