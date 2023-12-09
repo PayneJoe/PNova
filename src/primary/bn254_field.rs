@@ -1,5 +1,5 @@
 //// configurations for bn254 curve/field
-use crate::poseidon::{PoseidonDefaultConfig, PoseidonDefaultConfigEntry};
+use crate::poseidon::poseidon_constant::{PoseidonDefaultConfig, PoseidonDefaultConfigEntry};
 use ark_ff::{fields::models::*, MontBackend, MontConfig};
 
 /// for bn254 base field Fq

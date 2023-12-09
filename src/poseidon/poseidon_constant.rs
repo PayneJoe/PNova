@@ -1,4 +1,4 @@
-use crate::grain_lfsr::PoseidonGrainLFSR;
+use crate::poseidon::grain_lfsr::PoseidonGrainLFSR;
 use ark_crypto_primitives::sponge::poseidon::PoseidonConfig;
 use ark_ff::{fields::models::*, FpConfig, PrimeField};
 use ark_std::{vec, vec::Vec};
@@ -157,7 +157,7 @@ impl<const N: usize, P: PoseidonDefaultConfig<N>> PoseidonDefaultConfigField for
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::bn254::*;
+    use crate::primary::bn254_field::*;
     use ark_crypto_primitives::sponge::{
         poseidon::PoseidonSponge, CryptographicSponge, FieldBasedCryptographicSponge,
     };
