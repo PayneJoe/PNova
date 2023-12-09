@@ -166,7 +166,7 @@ mod test {
     #[test]
     fn test_bn254_fq_params() {
         // 3, 5, 8, 56, 0 is the best option for bn254 base field Fq
-        let constraints_rate_3 = Bn254Fq::get_default_poseidon_parameters(3, false).unwrap();
+        let constraints_rate_3 = Fq::get_default_poseidon_parameters(3, false).unwrap();
         assert_eq!(
             constraints_rate_3.ark[0][0],
             MontFp!(
@@ -177,14 +177,10 @@ mod test {
 
     #[test]
     fn test_poseidon_end_to_end() {
-        let sponge_param = Bn254Fq::get_default_poseidon_parameters(3, false).unwrap();
+        let sponge_param = Fq::get_default_poseidon_parameters(3, false).unwrap();
 
-        let mut sponge = PoseidonSponge::<Bn254Fq>::new(&sponge_param);
-        sponge.absorb(&vec![
-            Bn254Fq::from(0u8),
-            Bn254Fq::from(1u8),
-            Bn254Fq::from(2u8),
-        ]);
+        let mut sponge = PoseidonSponge::<Fq>::new(&sponge_param);
+        sponge.absorb(&vec![Fq::from(0u8), Fq::from(1u8), Fq::from(2u8)]);
         let res = sponge.squeeze_native_field_elements(3);
         assert_eq!(
             res[0],
