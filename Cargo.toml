@@ -18,15 +18,11 @@ generic-array = "1.0.0"
 ark-crypto-primitives = { version = "0.4.0", default-features = false, features = [
         "sponge",
 ] }
-ark-ff = "0.4.0"
 ark-std = { version = "0.4.0", default-features = false }
+ark-ec = {version = "0.4.0", default-features = false}
+ark-ff = {version= "0.4.0", default-features = false}
+ark-bn254 = {version = "0.4.0", default-features = false}
+ark_grumpkin = {git = "https://github.com/arkworks-rs/curves", package = "ark-grumpkin"}
+ark-poly = {version = "0.4.0", default-features = false}
 jf_primitives = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives"}
-
-# num-bigint = { version = "0.4", default-features = false }
-# ff = { version = "0.13", features = ["derive"] }
-# group = "0.13.0"
-# neptune = { version = "13.0.0", default-features = false }
-# halo2curves = { version = "0.4.0", features = ["derive_serde"] }
-# pasta_curves = { version = "0.5", features = ["repr-c", "serde"] }
-# ## main branch (tag=0.4.0) of jellyfish use https://github.com/EspressoSystems/blst.git which is not compatible with neptune/filecoin used 
-# jf_primitives = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives", tag = "0.3.0"}
+jf_utils = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-utils"}
