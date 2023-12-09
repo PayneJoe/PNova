@@ -9,6 +9,13 @@ As we know [the original Nova implementation](https://github.com/microsoft/Nova)
 
 <br />
 
+## Tasks Towards Plonkish Nova
+- Jellyfish(TurboPlonk/UltraPlonk) supporting relaxed plonkish circuit SAT
+- KZG commitment supporting BN254/Grumpkin
+- Poseidon Circuit based Jellyfish
+- Transcript based Poseidon 
+- Convert verification on Grumpkin (second curve) into verification on BN254?
+
 ## Details About Implementation
 
 Before intensive coding we will give more comprehensive details as much as possible, including some attestation code:
@@ -27,7 +34,7 @@ Before intensive coding we will give more comprehensive details as much as possi
 | Uncompressed Relaxed UltraPlonk Backend/Frontend | Ongoing | [relaxed-stage-1](https://github.com/ZKMod-Lab/jellyfish/tree/relaxed-stage-1) | [Relaxed Plonk Step by Step](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/BkT0ayKmT) |
 | Compressed Relaxed UltraPlonk Backend/Frontend   | Ongoing |                                                                                |                                                                                   |
 | **Stage Two**                                    |         |                                                                                |                                                                                   |
-| Uncompressed NIFS                                |  TODO   |                                                                                |                                                                                   |
+| Uncompressed NIFS                                | Ongoing |              [nifs](https://github.com/PayneJoe/PNova/tree/nifs)               |       [Plonkish Nova](https://hackmd.io/@70xfCGp1QViTYYJh3AMrQg/rkJYGYm46)        |
 | Uncompressed Cycle-Curve Circuits                |  TODO   |                                                                                |                                                                                   |
 | Support PLookup/LogUp Folding                    |  TODO   |                                                                                |                                                                                   |
 | **Stage Three**                                  |         |                                                                                |                                                                                   |
@@ -47,7 +54,12 @@ Before intensive coding we will give more comprehensive details as much as possi
 | 11/10/23 | Relaxed Plonk / Frontend Dev     | $\checkmark$ |
 | 11/12/23 | Relaxed Plonk / Frontend Testing | $\checkmark$ |
 | 11/15/23 | Relaxed Plonk / Backend Dev      | $\checkmark$ |
-| 11/16/23 | Relaxed Plonk / Backend Testing  | -            |
+| 12/05/23 | Transcript Dev                   | $\checkmark$ |
+| 12/06/23 | Poseidon RO Dev                  | $\checkmark$ |
+| 12/07/23 | PCS Dev                          | $\checkmark$ |
+| 12/08/23 | NIFS Dev                         | -            |
+| 12/08/23 | Poseidon Circuit RO Dev          | -            |
+| 12/08/23 | Cycle Circuit Dev                | -            |
 
 <br />
 
