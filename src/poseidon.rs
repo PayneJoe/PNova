@@ -158,17 +158,48 @@ impl<const N: usize, P: PoseidonDefaultConfig<N>> PoseidonDefaultConfigField for
 mod test {
     use super::*;
     use crate::bn254::*;
+    use ark_crypto_primitives::sponge::{
+        poseidon::PoseidonSponge, CryptographicSponge, FieldBasedCryptographicSponge,
+    };
     use ark_ff::MontFp;
 
     #[test]
     fn test_bn254_fq_params() {
         // 3, 5, 8, 56, 0 is the best option for bn254 base field Fq
         let constraints_rate_3 = Bn254Fq::get_default_poseidon_parameters(3, false).unwrap();
-        println!("{}", constraints_rate_3.ark[0][0]);
         assert_eq!(
             constraints_rate_3.ark[0][0],
             MontFp!(
                 "11633431549750490989983886834189948010834808234699737327785600195936805266405"
+            )
+        );
+    }
+
+    #[test]
+    fn test_poseidon_end_to_end() {
+        let sponge_param = Bn254Fq::get_default_poseidon_parameters(3, false).unwrap();
+
+        let mut sponge = PoseidonSponge::<Bn254Fq>::new(&sponge_param);
+        sponge.absorb(&vec![
+            Bn254Fq::from(0u8),
+            Bn254Fq::from(1u8),
+            Bn254Fq::from(2u8),
+        ]);
+        let res = sponge.squeeze_native_field_elements(3);
+        assert_eq!(
+            res[0],
+            MontFp!(
+                "13505558253904840554372886088574885784502988543966086461233803614170723033622"
+            )
+        );
+        assert_eq!(
+            res[1],
+            MontFp!("2010393222813830976204503948151039392318660137898235940886459326805089000473")
+        );
+        assert_eq!(
+            res[2],
+            MontFp!(
+                "14855598803087928644687564007348125840452284810388803200660562111886369342607"
             )
         );
     }
