@@ -15,7 +15,11 @@ num-traits = "0.2"
 digest = "0.10"
 generic-array = "1.0.0"
 
-ark-crypto-primitives = "0.4.0"
+ark-crypto-primitives = { version = "0.4.0", default-features = false, features = [
+        "sponge",
+] }
+ark-ff = "0.4.0"
+ark-std = { version = "0.4.0", default-features = false }
 jf_primitives = {git = "https://github.com/EspressoSystems/jellyfish", package = "jf-primitives"}
 
 # num-bigint = { version = "0.4", default-features = false }
