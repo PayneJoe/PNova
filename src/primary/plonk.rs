@@ -27,47 +27,47 @@ pub struct PLONK<E: Pairing> {
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct PLONKShape<E: Pairing> {
-    num_cons: usize,
-    num_wire_types: usize,
-    num_public_input: usize,
+    pub(crate) num_cons: usize,
+    pub(crate) num_wire_types: usize,
+    pub(crate) num_public_input: usize,
 
-    q_c: Vec<E::ScalarField>,
-    q_lc: Vec<Vec<E::ScalarField>>,
-    q_mul: Vec<Vec<E::ScalarField>>,
-    q_ecc: Vec<E::ScalarField>,
-    q_hash: Vec<E::ScalarField>,
-    q_o: Vec<E::ScalarField>,
-    q_e: Vec<E::ScalarField>,
+    pub(crate) q_c: Vec<E::ScalarField>,
+    pub(crate) q_lc: Vec<Vec<E::ScalarField>>,
+    pub(crate) q_mul: Vec<Vec<E::ScalarField>>,
+    pub(crate) q_ecc: Vec<E::ScalarField>,
+    pub(crate) q_hash: Vec<E::ScalarField>,
+    pub(crate) q_o: Vec<E::ScalarField>,
+    pub(crate) q_e: Vec<E::ScalarField>,
 }
 
 /// A type that holds a witness for a given Plonk instance
 /// w_0, w_1, w_2, w_3, w_o
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct PLONKWitness<E: Pairing> {
-    W: Vec<Vec<E::ScalarField>>,
+    pub(crate) W: Vec<Vec<E::ScalarField>>,
 }
 
 /// A type that holds a commitment vector and public io vector
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct PLONKInstance<E: Pairing> {
-    comm_W: Vec<Commitment<E>>,
-    X: Vec<E::ScalarField>,
+    pub(crate) comm_W: Vec<Commitment<E>>,
+    pub(crate) X: Vec<E::ScalarField>,
 }
 
 /// relaxed witness
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RelaxedPLONKWitness<E: Pairing> {
-    W: Vec<Vec<E::ScalarField>>,
-    E: Vec<E::ScalarField>,
+    pub(crate) W: Vec<Vec<E::ScalarField>>,
+    pub(crate) E: Vec<Vec<E::ScalarField>>,
 }
 
 /// relaxed instance
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RelaxedPLONKInstance<E: Pairing> {
-    comm_W: Vec<Commitment<E>>,
-    comm_E: Commitment<E>,
-    X: Vec<E::ScalarField>,
-    u: E::ScalarField,
+    pub(crate) comm_W: Vec<Commitment<E>>,
+    pub(crate) comm_E: Vec<Commitment<E>>,
+    pub(crate) X: Vec<E::ScalarField>,
+    pub(crate) u: E::ScalarField,
 }
 
 impl<E: Pairing> PLONK<E> {
@@ -131,7 +131,9 @@ impl<E: Pairing> RelaxedPLONKWitness<E> {
             W: (0..S.num_wire_types)
                 .map(|_| vec![<E::ScalarField as Field>::ZERO; S.num_cons])
                 .collect::<Vec<Vec<E::ScalarField>>>(),
-            E: vec![<E::ScalarField as Field>::ZERO; S.num_cons],
+            E: (0..S.num_wire_types - 1)
+                .map(|_| vec![<E::ScalarField as Field>::ZERO; S.num_cons])
+                .collect::<Vec<Vec<E::ScalarField>>>(),
         }
     }
 
@@ -142,35 +144,35 @@ impl<E: Pairing> RelaxedPLONKWitness<E> {
     ) -> RelaxedPLONKWitness<E> {
         RelaxedPLONKWitness {
             W: witness.W.clone(),
-            E: vec![<E::ScalarField as Field>::ZERO; S.num_cons],
+            E: (0..S.num_wire_types - 1)
+                .map(|_| vec![<E::ScalarField as Field>::ZERO; S.num_cons])
+                .collect::<Vec<Vec<E::ScalarField>>>(),
         }
     }
 
     /// Commits to the witness using the supplied generators
-    pub fn commit(&self, ck: &CommitmentKey<E>) -> (Vec<Commitment<E>>, Commitment<E>) {
-        let com_W = self
-            .W
-            .iter()
-            .map(|w| {
-                let p = <DensePolynomial<E::ScalarField> as DenseUVPolynomial<
-                    E::ScalarField,
-                >>::from_coefficients_vec(w.to_vec());
-                UnivariateKzgPCS::<E>::commit(ck, &p).unwrap()
-            })
-            .collect::<Vec<Commitment<E>>>();
+    pub fn commit(&self, ck: &CommitmentKey<E>) -> (Vec<Commitment<E>>, Vec<Commitment<E>>) {
+        let com_func = |vecs: &Vec<Vec<E::ScalarField>>| {
+            vecs.iter()
+                .map(|v| {
+                    let p = <DensePolynomial<E::ScalarField> as DenseUVPolynomial<
+                        E::ScalarField,
+                    >>::from_coefficients_vec(v.to_vec());
+                    UnivariateKzgPCS::<E>::commit(ck, &p).unwrap()
+                })
+                .collect::<Vec<Commitment<E>>>()
+        };
 
-        let poly_e = <DensePolynomial<E::ScalarField> as DenseUVPolynomial<
-            E::ScalarField,
-        >>::from_coefficients_vec(self.E.to_vec());
+        let comm_W = com_func(&self.W);
+        let comm_E = com_func(&self.E);
 
-        let com_E = UnivariateKzgPCS::<E>::commit(ck, &poly_e).unwrap();
-        (com_W, com_E)
+        (comm_W, comm_E)
     }
 
     pub fn fold(
         &self,
         W2: &PLONKWitness<E>,
-        T: &[E::ScalarField],
+        T: &Vec<Vec<E::ScalarField>>,
         r: &E::ScalarField,
     ) -> Result<RelaxedPLONKWitness<E>, MyError> {
         let (W1, E1) = (&self.W, &self.E);
@@ -180,23 +182,23 @@ impl<E: Pairing> RelaxedPLONKWitness<E> {
             return Err(MyError::WitnessError);
         }
 
-        let W = W1
-            .par_iter()
-            .zip(W2)
-            .map(|(a_col, b_col)| {
-                a_col
-                    .par_iter()
-                    .zip(b_col)
-                    .map(|(a, b)| *a + *r * *b)
-                    .collect::<Vec<E::ScalarField>>()
-            })
-            .collect::<Vec<Vec<E::ScalarField>>>();
+        let fold_scalar_func = |a_vecs: &Vec<Vec<E::ScalarField>>,
+                                b_vecs: &Vec<Vec<E::ScalarField>>| {
+            a_vecs
+                .par_iter()
+                .zip(b_vecs)
+                .map(|(a_col, b_col)| {
+                    a_col
+                        .par_iter()
+                        .zip(b_col)
+                        .map(|(a, b)| *a + *r * *b)
+                        .collect::<Vec<E::ScalarField>>()
+                })
+                .collect::<Vec<Vec<E::ScalarField>>>()
+        };
+        let W = fold_scalar_func(&W1, &W2);
+        let E = fold_scalar_func(&E1, T);
 
-        let E = E1
-            .par_iter()
-            .zip(T)
-            .map(|(a, b)| *a + *r * *b)
-            .collect::<Vec<E::ScalarField>>();
         Ok(RelaxedPLONKWitness { W, E })
     }
 }
@@ -207,7 +209,9 @@ impl<E: Pairing> RelaxedPLONKInstance<E> {
             (0..S.num_wire_types)
                 .map(|_| Commitment::<E>::default())
                 .collect::<Vec<Commitment<E>>>(),
-            Commitment::<E>::default(),
+            (0..S.num_wire_types - 1)
+                .map(|_| Commitment::<E>::default())
+                .collect::<Vec<Commitment<E>>>(),
         );
         RelaxedPLONKInstance {
             comm_W,
@@ -235,9 +239,12 @@ impl<E: Pairing> RelaxedPLONKInstance<E> {
         comm_W: &Vec<Commitment<E>>,
         X: &[E::ScalarField],
     ) -> RelaxedPLONKInstance<E> {
+        let comm_E = (0..comm_W.len() - 1)
+            .map(|_| Commitment::<E>::default())
+            .collect::<Vec<Commitment<E>>>();
         RelaxedPLONKInstance {
             comm_W: comm_W.to_owned(),
-            comm_E: Commitment::<E>::default(),
+            comm_E: comm_E,
             u: E::ScalarField::ONE,
             X: X.to_vec(),
         }
@@ -247,7 +254,7 @@ impl<E: Pairing> RelaxedPLONKInstance<E> {
     pub fn fold(
         &self,
         U2: &PLONKInstance<E>,
-        comm_T: &Commitment<E>,
+        comm_T: &Vec<Commitment<E>>,
         r: &E::ScalarField,
     ) -> Result<RelaxedPLONKInstance<E>, MyError> {
         let (X1, u1, comm_W_1, comm_E_1) =
@@ -260,19 +267,22 @@ impl<E: Pairing> RelaxedPLONKInstance<E> {
             .zip(X2)
             .map(|(a, b)| *a + *r * *b)
             .collect::<Vec<E::ScalarField>>();
-        let comm_W = comm_W_1
-            .par_iter()
-            .zip(comm_W_2)
-            .map(|(com_w_1, com_w_2)| {
-                let w_2_affine: &E::G1Affine = com_w_2.as_ref();
-                let w_1_affine: &E::G1Affine = com_w_1.as_ref();
-                Commitment((*w_1_affine + *w_2_affine * *r).into_affine())
-            })
-            .collect::<Vec<Commitment<E>>>();
-        // let comm_W = *comm_W_1 + *comm_W_2 * *r;
-        let E_1_affine: &E::G1Affine = comm_E_1.as_ref();
-        let T_affine: &E::G1Affine = comm_T.as_ref();
-        let comm_E = Commitment((*E_1_affine + *T_affine * *r).into_affine());
+
+        let fold_comm_func = |comm_1: &Vec<Commitment<E>>, comm_2: &Vec<Commitment<E>>| {
+            comm_1
+                .par_iter()
+                .zip(comm_2)
+                .map(|(a, b)| {
+                    let a_affine: &E::G1Affine = a.as_ref();
+                    let b_affine: &E::G1Affine = b.as_ref();
+                    Commitment((*a_affine + *b_affine * *r).into_affine())
+                })
+                .collect::<Vec<Commitment<E>>>()
+        };
+
+        let comm_W = fold_comm_func(&self.comm_W, &U2.comm_W);
+        let comm_E = fold_comm_func(&self.comm_E, comm_T);
+
         let u = *u1 + *r;
 
         Ok(RelaxedPLONKInstance {
@@ -343,6 +353,41 @@ impl<E: Pairing> PLONKShape<E> {
         })
     }
 
+    fn compute_cross_terms(
+        inst1: &Vec<Vec<E::ScalarField>>,
+        inst2: &Vec<Vec<E::ScalarField>>,
+    ) -> Vec<Vec<E::ScalarField>> {
+        assert!(inst1.len() == inst2.len(), "compute cross term");
+
+        let element_mul = |a_vec: &Vec<E::ScalarField>, b_vec: &Vec<E::ScalarField>| {
+            a_vec.par_iter().zip(b_vec).map(|(a, b)| *a * *b).collect()
+        };
+
+        let max_degree = inst1.len();
+        (1..max_degree)
+            .rev()
+            .map(|r_degree| {
+                let l_degree = max_degree - r_degree;
+                let l_first: &Vec<E::ScalarField> = &(inst1[0]);
+                let l_prod: Vec<E::ScalarField> = inst1[1..l_degree]
+                    .into_iter()
+                    .collect::<Vec<&Vec<E::ScalarField>>>()
+                    .iter()
+                    .fold(l_first.clone(), |acc, xs| element_mul(&acc, xs));
+
+                let r_first: &Vec<E::ScalarField> = &(inst2[0]);
+                let r_prod: Vec<E::ScalarField> = inst2[l_degree..]
+                    .into_iter()
+                    .collect::<Vec<&Vec<E::ScalarField>>>()
+                    .iter()
+                    .fold(r_first.clone(), |acc, xs| element_mul(&acc, xs));
+
+                element_mul(&l_prod, &r_prod)
+            })
+            .rev()
+            .collect::<Vec<Vec<E::ScalarField>>>()
+    }
+
     pub fn commit_T(
         &self,
         ck: &CommitmentKey<E>,
@@ -351,6 +396,18 @@ impl<E: Pairing> PLONKShape<E> {
         U2: &PLONKInstance<E>,
         W2: &PLONKWitness<E>,
     ) -> Result<(Vec<E::ScalarField>, Commitment<E>), MyError> {
+        assert!(W1.W.len() == self.num_wire_types - 1, "wrong wires");
+        // q_ecc operation
+
+        // q_lc operation
+
+        // q_mul operation
+
+        // q_out operation
+
+        // q_c and pi operation
+
+        // q_hash operation
         todo!()
     }
 }
