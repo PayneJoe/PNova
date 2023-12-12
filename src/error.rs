@@ -26,4 +26,6 @@ pub enum MyError {
     /// public intput error
     #[error("public input error")]
     PublicIntputError,
+    #[error("Selector error")]
+    SelectorError,
 }

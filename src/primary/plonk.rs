@@ -1,4 +1,4 @@
-/// plonk instances for NOVA
+/// plonk instances for primary circuit over BN254 curve
 ///
 use ark_ec::pairing::Pairing;
 use ark_ec::CurveGroup;
@@ -281,5 +281,76 @@ impl<E: Pairing> RelaxedPLONKInstance<E> {
             X,
             u,
         })
+    }
+}
+
+impl<E: Pairing> PLONKShape<E> {
+    pub fn new(
+        num_cons: usize,
+        num_wire_types: usize,
+        num_public_input: usize,
+        q_c: &Vec<E::ScalarField>,
+        q_lc: &Vec<Vec<E::ScalarField>>,
+        q_mul: &Vec<Vec<E::ScalarField>>,
+        q_ecc: &Vec<E::ScalarField>,
+        q_hash: &Vec<E::ScalarField>,
+        q_o: &Vec<E::ScalarField>,
+        q_e: &Vec<E::ScalarField>,
+    ) -> Result<PLONKShape<E>, MyError> {
+        assert!(q_lc.len() == num_wire_types - 1);
+        assert!(q_mul.len() == 2);
+        let is_valid = |num_cons: usize, q: &Vec<E::ScalarField>| -> Result<(), MyError> {
+            if (q.len() == num_cons) {
+                Ok(())
+            } else {
+                Err(MyError::SelectorError)
+            }
+        };
+
+        let invalid_num: i32 = vec![
+            vec![q_c, q_ecc, q_hash, q_o, q_e],
+            q_lc.into_iter().collect::<Vec<&Vec<E::ScalarField>>>(),
+            q_mul.into_iter().collect::<Vec<&Vec<E::ScalarField>>>(),
+        ]
+        .concat()
+        .iter()
+        .map(|q| {
+            if (is_valid(num_cons, q).is_err()) {
+                1 as i32
+            } else {
+                0 as i32
+            }
+        })
+        .collect::<Vec<i32>>()
+        .iter()
+        .sum();
+
+        if (invalid_num > 0) {
+            return Err(MyError::SelectorError);
+        }
+
+        Ok(PLONKShape {
+            num_cons: num_cons,
+            num_wire_types: num_wire_types,
+            num_public_input: num_public_input,
+            q_c: q_c.to_owned(),
+            q_lc: q_lc.to_owned(),
+            q_mul: q_mul.to_owned(),
+            q_ecc: q_ecc.to_owned(),
+            q_hash: q_hash.to_owned(),
+            q_o: q_o.to_owned(),
+            q_e: q_e.to_owned(),
+        })
+    }
+
+    pub fn commit_T(
+        &self,
+        ck: &CommitmentKey<E>,
+        U1: &RelaxedPLONKInstance<E>,
+        W1: &RelaxedPLONKWitness<E>,
+        U2: &PLONKInstance<E>,
+        W2: &PLONKWitness<E>,
+    ) -> Result<(Vec<E::ScalarField>, Commitment<E>), MyError> {
+        todo!()
     }
 }
