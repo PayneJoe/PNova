@@ -1,6 +1,6 @@
 /// plonk instances for primary circuit over BN254 curve
 ///
-/// computation of cross terms followed from chapter 3.5 of protostar: https://eprint.iacr.org/2023/620.pdf
+/// computation of cross terms followed from chapter 3.4 of protostar: https://eprint.iacr.org/2023/620.pdf
 ///
 use ark_ec::pairing::Pairing;
 use ark_ec::CurveGroup;
@@ -19,7 +19,7 @@ use crate::primary::kzg::gen_srs_for_testing;
 
 use std::marker::PhantomData;
 
-type CommitmentKey<E> = UnivariateProverParam<E>;
+pub(crate) type CommitmentKey<E> = UnivariateProverParam<E>;
 
 /// Public parameters for a given PLONK
 #[derive(Clone)]
