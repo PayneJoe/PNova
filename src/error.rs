@@ -20,4 +20,12 @@ pub enum MyError {
     /// commitment error
     #[error("commitment error")]
     CommitmentError,
+    /// witness error
+    #[error("witness erro")]
+    WitnessError,
+    /// public intput error
+    #[error("public input error")]
+    PublicIntputError,
+    #[error("Selector error")]
+    SelectorError,
 }
