@@ -1,2 +1,2 @@
-pub mod grain_lfsr;
-pub mod poseidon_constant;
+mod grain_lfsr;
+pub mod poseidon_constants;
