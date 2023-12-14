@@ -1,6 +1,7 @@
 //// configurations for bn254 curve/field
 use crate::poseidon::poseidon_constant::{PoseidonDefaultConfig, PoseidonDefaultConfigEntry};
-use ark_ff::{fields::models::*, MontBackend, MontConfig};
+use ark_crypto_primitives::sponge::Absorb;
+use ark_ff::{fields::models::*, MontBackend, MontConfig, PrimeField};
 
 /// for bn254 base field Fq
 #[derive(MontConfig)]
@@ -10,6 +11,19 @@ pub struct FqBackend;
 
 type FqConfig = MontBackend<FqBackend, 4>;
 pub type Fq = Fp256<FqConfig>;
+
+// pub struct BaseField(Fq);
+
+// impl Absorb for BaseField {
+//     // convert BaseField into bytes
+//     fn to_sponge_bytes(&self, dest: &mut Vec<u8>) {
+//         todo!()
+//     }
+//     // convert BaseField into ScalarField
+//     fn to_sponge_field_elements<F: PrimeField>(&self, dest: &mut Vec<F>) {
+//         todo!()
+//     }
+// }
 
 impl PoseidonDefaultConfig<4> for FqConfig {
     const PARAMS_OPT_FOR_CONSTRAINTS: [PoseidonDefaultConfigEntry; 7] = [
