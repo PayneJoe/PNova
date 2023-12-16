@@ -16,7 +16,7 @@ use super::plonk::{
     RelaxedPLONKWitness,
 };
 use crate::error::MyError;
-use crate::poseidon::poseidon_constant::PoseidonDefaultConfigField;
+use crate::poseidon::poseidon_constants::PoseidonDefaultConfigField;
 
 pub struct NIFS<E: Pairing> {
     pub(crate) comm_T: Commitment<E>,
