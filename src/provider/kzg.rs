@@ -1,10 +1,10 @@
 use rand::rngs::StdRng;
 use std::marker::PhantomData;
 
-use crate::traits::{CommitmentEngineTrait, CommitmentTrait};
+use crate::traits::CommitmentEngineTrait;
 
 use ark_ec::{pairing::Pairing, scalar_mul::fixed_base::FixedBase, CurveGroup};
-use ark_ff::PrimeField;
+use ark_ff::{Field, PrimeField};
 use ark_poly::{univariate::DensePolynomial, DenseUVPolynomial};
 use ark_std::{
     end_timer,
@@ -17,6 +17,8 @@ use jf_primitives::pcs::{
     prelude::{PCSError, UnivariateKzgPCS, UnivariateProverParam, UnivariateUniversalParams},
     PolynomialCommitmentScheme, StructuredReferenceString,
 };
+
+use crate::traits::Group;
 
 pub fn gen_srs_for_testing<E: Pairing, R: RngCore + CryptoRng>(
     rng: &mut R,
@@ -73,28 +75,35 @@ pub fn gen_srs_for_testing<E: Pairing, R: RngCore + CryptoRng>(
 
 /// implement LOCAL trait CommitmentEngineTrait for it
 ///
-pub struct KZG<E: Pairing> {
-    _p: PhantomData<E>,
+pub struct CommitmentEngine<G: Group> {
+    _p: PhantomData<G>,
 }
 
-impl<E> CommitmentTrait<E> for Commitment<E> where E: Pairing {}
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct KZGCommitmentKey<G: Pairing>(UnivariateProverParam<G>);
 
-impl<E> CommitmentEngineTrait<E> for KZG<E>
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct KZGCommitment<G: Pairing>(Commitment<G>);
+
+// impl<G> CommitmentTrait<G> for KZGCommitment<G> where G: Group {}
+
+impl<G> CommitmentEngineTrait<G> for CommitmentEngine<G>
 where
-    E: Pairing,
+    G: Group,
 {
-    type CommitmentKey = UnivariateProverParam<E>;
-    type Commitment = Commitment<E>;
+    type CommitmentKey = KZGCommitmentKey<G>;
+    type Commitment = KZGCommitment<G>;
 
     fn setup(rng: &mut StdRng, degree: usize) -> Self::CommitmentKey {
-        let pp: UnivariateUniversalParams<E> = gen_srs_for_testing(rng, degree, 1).unwrap();
+        let pp: UnivariateUniversalParams<G> = gen_srs_for_testing(rng, degree, 1).unwrap();
         let (ck, _) = pp.trim(degree).unwrap();
-        ck
+        KZGCommitmentKey(ck)
     }
 
-    fn commit(ck: &Self::CommitmentKey, v: &[E::ScalarField]) -> Self::Commitment {
-        let poly = 
-            <DensePolynomial<E::ScalarField> as DenseUVPolynomial<E::ScalarField,>>::from_coefficients_vec(v.to_vec());
-        UnivariateKzgPCS::<E>::commit(ck, &poly).unwrap()
+    fn commit(ck: &Self::CommitmentKey, v: &[<G as Pairing>::ScalarField]) -> Self::Commitment {
+        let poly = <DensePolynomial<<G as Pairing>::ScalarField> as DenseUVPolynomial<
+            <G as Pairing>::ScalarField,
+        >>::from_coefficients_vec(v.to_vec());
+        KZGCommitment(UnivariateKzgPCS::<G>::commit(&ck.0, &poly).unwrap())
     }
 }

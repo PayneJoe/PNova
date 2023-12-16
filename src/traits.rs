@@ -1,20 +1,22 @@
 use ark_ec::pairing::Pairing;
+use ark_ff::PrimeField;
+use core::fmt::Debug;
 use rand::rngs::StdRng;
-// use ark_ff::PrimeField;
 
-// pub trait Group: Sized {
-//     type BaseField: PrimeField;
-//     type ScalarField: PrimeField;
-//     type RO: ROTrait<Self::BaseField, Self::ScalarField>;
-//     type CE: CommitmentEngineTrait<Self>;
-// }
+pub trait Group: Sized + Pairing {
+    type BaseField: PrimeField;
+    type ScalarField: PrimeField;
+    type PreprocessedGroupElement: Clone + Debug;
+    type RO: ROTrait<<Self as Group>::BaseField, <Self as Group>::ScalarField>;
+    type CE: CommitmentEngineTrait<Self>;
+}
 pub trait ROConstantsTrait<BaseField> {
     /// produces constants/parameters associated with the hash function
     fn new(rate: usize) -> Self;
 }
 
 pub trait ROTrait<BaseField, ScalarField> {
-    type Constants: ROConstantsTrait<BaseField>;
+    type Constants: ROConstantsTrait<BaseField> + Clone;
 
     /// Initializes the hash function
     fn new(constants: Self::Constants) -> Self;
@@ -26,18 +28,18 @@ pub trait ROTrait<BaseField, ScalarField> {
     fn squeeze(&mut self) -> ScalarField;
 }
 
-pub trait CommitmentEngineTrait<E: Pairing> {
+pub trait CommitmentEngineTrait<G: Group> {
     /// Holds the type of the commitment key
-    type CommitmentKey;
+    type CommitmentKey: Clone + Debug;
 
     /// Holds the type of the commitment
-    type Commitment: CommitmentTrait<E>;
+    type Commitment: Clone + Debug + PartialEq + Eq;
 
     /// Samples a new commitment key of a specified size
     fn setup(rng: &mut StdRng, degree: usize) -> Self::CommitmentKey;
 
     /// Commits to the provided vector using the provided generators
-    fn commit(ck: &Self::CommitmentKey, v: &[E::ScalarField]) -> Self::Commitment;
+    fn commit(ck: &Self::CommitmentKey, v: &[<G as Pairing>::ScalarField]) -> Self::Commitment;
 }
 
-pub trait CommitmentTrait<E: Pairing> {}
+// pub trait CommitmentTrait<E: Group>: Clone + Debug + PartialEq + Eq {}

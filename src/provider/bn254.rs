@@ -1,5 +1,7 @@
 use crate::poseidon::poseidon_constants::{PoseidonDefaultConfig, PoseidonDefaultConfigEntry};
-use ark_bn254::{Bn254, Fq, FqConfig};
+use crate::provider::{kzg::CommitmentEngine, poseidon::PoseidonRO};
+use crate::traits::Group;
+use ark_bn254::{Bn254, Fq, FqConfig, Fr, G1Affine};
 use ark_ff::fields::MontBackend;
 
 impl PoseidonDefaultConfig<4> for MontBackend<FqConfig, 4> {
@@ -21,4 +23,12 @@ impl PoseidonDefaultConfig<4> for MontBackend<FqConfig, 4> {
         PoseidonDefaultConfigEntry::new(7, 257, 8, 13, 0),
         PoseidonDefaultConfigEntry::new(8, 257, 8, 13, 0),
     ];
+}
+
+impl Group for Bn254 {
+    type BaseField = Fq;
+    type ScalarField = Fr;
+    type PreprocessedGroupElement = G1Affine;
+    type RO = PoseidonRO<Fq, Fr>;
+    type CE = CommitmentEngine<Self>;
 }

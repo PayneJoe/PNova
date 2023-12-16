@@ -2,10 +2,13 @@ use ark_crypto_primitives::sponge::poseidon::{PoseidonConfig, PoseidonSponge};
 use ark_crypto_primitives::sponge::{Absorb, CryptographicSponge};
 use ark_ff::PrimeField;
 
+use std::marker::PhantomData;
+
 use crate::poseidon::poseidon_constants::PoseidonDefaultConfigField;
 use crate::traits::{ROConstantsTrait, ROTrait};
 
 /// wrap a EXTERNAL object PoseidonConfig<F: PrimeField>, and implement LOCAL trait 'ROConstantsTrait'
+#[derive(Clone)]
 pub struct PoseidonConstants<BaseField: PrimeField>(PoseidonConfig<BaseField>);
 
 impl<BaseField> ROConstantsTrait<BaseField> for PoseidonConstants<BaseField>
@@ -21,9 +24,12 @@ where
 }
 
 /// wrap a EXTERNAL object PoseidonSponge, impl LOCAL trait ROTrait
-pub struct PoseidonRO<BaseField: PrimeField>(PoseidonSponge<BaseField>);
+pub struct PoseidonRO<BaseField: PrimeField, ScalarField: PrimeField> {
+    ro: PoseidonSponge<BaseField>,
+    _p: PhantomData<ScalarField>,
+}
 
-impl<BaseField, ScalarField> ROTrait<BaseField, ScalarField> for PoseidonRO<BaseField>
+impl<BaseField, ScalarField> ROTrait<BaseField, ScalarField> for PoseidonRO<BaseField, ScalarField>
 where
     BaseField: PrimeField + PoseidonDefaultConfigField + Absorb,
     ScalarField: PrimeField,
@@ -31,14 +37,17 @@ where
     type Constants = PoseidonConstants<BaseField>;
 
     fn new(constants: Self::Constants) -> Self {
-        Self(PoseidonSponge::<BaseField>::new(&constants.0))
+        Self {
+            ro: PoseidonSponge::<BaseField>::new(&constants.0),
+            _p: PhantomData,
+        }
     }
 
     fn absorb(&mut self, e: BaseField) {
-        self.0.absorb(&e);
+        self.ro.absorb(&e);
     }
 
     fn squeeze(&mut self) -> ScalarField {
-        self.0.squeeze_field_elements::<ScalarField>(1 as usize)[0]
+        self.ro.squeeze_field_elements::<ScalarField>(1 as usize)[0]
     }
 }
